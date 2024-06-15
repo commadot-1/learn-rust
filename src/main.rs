@@ -2,9 +2,27 @@ use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
 
+slint::include_modules!();
 
-fn main() {
-    println!("Guess the number!");
+fn main() -> Result<(), slint::PlatformError> {
+    let ui = AppWindow::new()?;
+    let ui_handle = ui.as_weak();
+
+    ui.on_check_guess(move |guess: i32| {
+        let ui = ui_handle..unwrap();
+        let secret_number = rand::thread_rng().gen_range(1..=100);
+        let result = match guess.cmp(&secret_number) {
+            Ordering::Less => ui.set_message("Too small!"),
+            Ordering::Greater => ui.set_message("Too big!"),
+            Ordering::Equal => ui.set_message("You win!"),
+        };
+
+    
+    });
+
+    ui.run()
+
+   /*  println!("Guess the number!");
     //let ui = AppWindow::new()?;
     let secret_number = rand::thread_rng().gen_range(1..=100);
    
@@ -36,5 +54,6 @@ fn main() {
         }
       
     }
-   
+   */
+ 
 }

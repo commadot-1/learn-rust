@@ -1,17 +1,59 @@
 
-import { Button, VerticalBox } from "std-widgets.slint";
+import { Button, VerticalBox, GridBox, LineEdit } from "std-widgets.slint";
 
 export component AppWindow inherits Window {
-    in-out property<int> counter: 42;
-    callback request-increase-value();
-    VerticalBox {
-        Text {
-            text: "Counter: \{root.counter}";
+    GridLayout {
+        padding: 50px;
+        spacing:25px;
+        Row{
+            text := Text{
+                text: "Enter your guess:";
+                horizontal-alignment: center;
+                font-size: 15px;
+                font-weight: 900;
+                color: black;
+            }
+            
         }
-        Button {
-            text: "Increase value";
-            clicked => {
-                root.request-increase-value();
+
+        Row{
+            inout := LineEdit {
+            
+                placeholder-text: "guess";
+                font-size: 15px;
+                height: 30px;
+                horizontal-alignment: center;
+
+            }
+            
+        }
+
+        Row{
+            button := Button {
+                text: "Submit Guess";
+                padding-top: 25px;
+                height: 30px;
+                primary: true;
+                clicked => {
+                    root.check-guess(input.text);
+                }
+            } 
+         
+        }
+
+        Row{
+            VerticalBox{
+                Rectangle {
+                    height: 120px;
+                    background: white;
+                    Text{
+                        text: root.result;
+                        font-size: 15px;
+                        color: black;
+                        font-weight: 500;
+                    }
+                    
+                }
             }
         }
     }
